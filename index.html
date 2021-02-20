@@ -1,0 +1,70 @@
+<!DOCTYPE html>
+<html lang="en">
+
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Document</title>
+    <script src="https://ajax.googleapis.com/ajax/libs/jquery/3.5.1/jquery.min.js"></script>
+    <script>
+        $(document).ready(function () {
+
+            $.ajax({
+                type: 'GET',
+                url: 'http://livescore-api.com/api-client/scores/live.json?key=ELhAvRy9Cvsi13QP&secret=Oiibb3YFDpKgjDbXotxTk53XBwfDz6sn',
+
+                headers: {
+                    'Access-Control-Allow-Origin': '*',
+                },
+                beforeSend: function (xhr) {
+                    xhr.setRequestHeader("Authorization", "Basic " + btoa(""));
+                },
+                success: function (info) {
+                    console.log(info);
+                    $.each(info.data.match, function (index, value) {
+
+                        var match = $('<tr>');
+
+                        match.append('<td><a href="http://www.google.com/search?q=' + value.home_name + '"</a>' + value.home_name + '</td>')
+                        match.append('<td><a href="http://www.google.com/search?q=' + value.away_name + '"</a>' + value.away_name + '</td>')
+                        if (value.status == "FINISHED") {
+                            match.append('<td onchange="alert()"><strong>' + value.ft_score + '</strong></td>')
+                        } else {
+                            match.append('<td onchange="alert()"><strong>' + value.score + '</strong></td>')
+                        }
+                        match.append('<td>' + value.competition_name + '</td>')
+                        if (value.status != "FINISHED") {
+                            match.append('<td>' + value.time + '</td>')
+                        } else {
+                            match.append('<td>' + "-" + '</td>')
+                        }
+
+                        match.append('<td>' + value.status + '</td>')
+
+                        $('table').append(match);
+
+                    })
+                }, error: function (xhr, textStatus, errorThrown) {
+                    console.log('Unable to load data')
+                }
+
+            });
+        });
+    </script>
+</head>
+
+<body>
+    <table class="table">
+        <tr>
+            <th>Home</th>
+            <th>Away</th>
+            <th>Score</th>
+            <th>League</th>
+            <th>Time</th>
+            <th>Live</th>
+
+        </tr>
+    </table>
+</body>
+
+</html>
